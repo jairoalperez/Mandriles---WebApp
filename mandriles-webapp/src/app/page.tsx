@@ -1,9 +1,12 @@
-import MandrilList from "../components/MandrilList";
+"use client";
+
+import '../app/custom-styles.css'; // Import custom styles
+import MandrilEntries from "../components/MandrilEntries";
 
 const Home: React.FC = () => {
     return (
         <div>
-            <MandrilList />
+            <MandrilEntries />
         </div>
     );
 };
