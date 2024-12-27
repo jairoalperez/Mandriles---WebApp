@@ -3,11 +3,14 @@
 import React, { useEffect, useState } from "react"
 import axios from "axios"
 import { Mandril } from "../types/mandril"
+import { cn } from "@components/lib/utils"
+import MandrilCard from "./MandrilCard"
 
 const MandrilList: React.FC = () => {
 	const [mandrils, setMandrils] = useState<Mandril[]>([])
 	const [loading, setLoading] = useState<boolean>(true)
 	const [error, setError] = useState<string | null>(null)
+	const [isDarkMode, setIsDarkMode] = useState<boolean>(false)
 
 	useEffect(() => {
 		let config = {
@@ -27,34 +30,44 @@ const MandrilList: React.FC = () => {
 			})
 	}, [])
 
+	useEffect(() => {
+		const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+		const handleChange = (e: MediaQueryListEvent) => {
+			setIsDarkMode(e.matches);
+			console.log('Dark mode:', e.matches);
+		};
+
+		// Set initial state
+		setIsDarkMode(mediaQuery.matches);
+		console.log('Initial dark mode:', mediaQuery.matches);
+		mediaQuery.addEventListener('change', handleChange);
+
+		// Clean up the event listener on component unmount
+		return () => mediaQuery.removeEventListener('change', handleChange);
+	}, []);
+
 	if (loading) {
 		return <div>Loading...</div>
 	}
 
 	if (error) {
-		console.log("estoy aqui")
 		return <div>{error}</div>
 	}
 
 	return (
 		<div>
-			<h1 className="text-2xl font-bold mb-4">MANDRILES</h1>
-			<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+		<div className={cn(isDarkMode ? "dark" : "", "flex flex-col items-center ml-8 mr-8 mt-8 p-4")}>
+			<h1 className="text-4xl font-bold mb-8 mt-8 text-foreground">MANDRILES</h1>
+			<div
+				className={cn(
+					"grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 2xl:grid-cols-4 gap-4 p-4",
+				)}
+			>
 				{mandrils.map((mandril) => (
-					<div key={mandril.id} className="border p-4 rounded-lg shadow-md bg-white">
-						<h2 className="text-xl font-semibold">
-							{mandril.firstName} {mandril.lastName}
-						</h2>
-						<ul className="mt-2">
-							{mandril.skills.map((skill) => (
-								<li key={skill.id} className="text-sm text-grey-700">
-									{skill.name} - (Power: {skill.power})
-								</li>
-							))}
-						</ul>
-					</div>
+					<MandrilCard key={mandril.id} mandril={mandril} />
 				))}
 			</div>
+		</div>
 		</div>
 	)
 }
