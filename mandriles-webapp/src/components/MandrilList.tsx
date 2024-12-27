@@ -5,6 +5,7 @@ import axios from "axios"
 import { Mandril } from "../types/mandril"
 import { cn } from "@components/lib/utils"
 import MandrilCard from "./MandrilCard"
+import ThemeProvider from "@components/helpers/ThemeProvider"
 
 const MandrilList: React.FC = () => {
 	const [mandrils, setMandrils] = useState<Mandril[]>([])
@@ -56,7 +57,7 @@ const MandrilList: React.FC = () => {
 
 	return (
 		<div>
-		<div className={cn(isDarkMode ? "dark" : "", "flex flex-col items-center ml-8 mr-8 mt-8 p-4")}>
+		<div className={cn("flex flex-col items-center ml-8 mr-8 mt-8 p-4")}>
 			<h1 className="text-4xl font-bold mb-8 mt-8 text-foreground">MANDRILES</h1>
 			<div
 				className={cn(
