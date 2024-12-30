@@ -6,6 +6,7 @@ import { Mandril } from "../types/mandril"
 import { cn } from "@components/lib/utils"
 import MandrilCard from "./MandrilCard"
 import Link from 'next/link';
+import MandrilCreateCard from "./MandrilCreateCard"
 
 const MandrilList: React.FC = () => {
 	const [mandrils, setMandrils] = useState<Mandril[]>([])
@@ -62,6 +63,7 @@ const MandrilList: React.FC = () => {
 						"grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 2xl:grid-cols-4 gap-4 p-4",
 					)}
 				>
+					<MandrilCreateCard />
 					{mandrils.map((mandril) => (
 					<Link key={mandril.id} href={`/mandril/${mandril.id}`}>  
 						<MandrilCard mandril={mandril} />
