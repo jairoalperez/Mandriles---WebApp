@@ -54,9 +54,9 @@ const MandrilList: React.FC = () => {
 	}
 
 	return (
-		<div>
-			<div className={cn("flex flex-col items-center ml-8 mr-8 mt-8 p-4")}>
-			<h1 className="text-4xl font-bold mb-8 mt-8 text-foreground">MANDRILES</h1>
+		<div className="flex justify-center">
+			<div className={cn("mx-auto flex flex-col items-center p-4")}>
+			<h1 className="text-4xl font-bold mx-auto mb-8 mt-8 text-foreground">MANDRILES</h1>
 				<div
 					className={cn(
 						"grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 2xl:grid-cols-4 gap-4 p-4",

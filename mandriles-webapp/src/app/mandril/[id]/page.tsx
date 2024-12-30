@@ -61,7 +61,7 @@ const MandrilDetail: React.FC = () => {
     return (
         <div>
             <div className={cn("flex flex-col items-center ml-8 mr-8 mt-8 p-4")}>
-                <h1 className="text-4xl font-bold mb-8 mt-8 text-foreground">{mandril?.firstName} {mandril?.lastName}</h1>
+                <h1 className="text-3xl md:text-4xl whitespace-nowrap font-bold mb-8 mt-8 text-foreground">{mandril?.firstName} {mandril?.lastName}</h1>
                 <div className='flex justify-center w-full'>
                 <Table className='w-auto mx-auto'>
                     <TableHeader>

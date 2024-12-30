@@ -18,11 +18,11 @@ interface MandrilCardProps {
 }
 
 const MandrilCard: React.FC<MandrilCardProps> = ({ mandril }) => {
-    return (
-    <div>
+  return (
+    <div className="w-[280px]">
       <Card
         className={cn(
-          "w-[280px] text-center transition-colors duration-200 cursor-pointer bg-card text-card-foreground hover:bg-primary hover:text-primary-foreground border-border active:bg-muted active:bg-foreground active:text-background"
+          "text-center transition-colors duration-200 cursor-pointer bg-card text-card-foreground hover:bg-primary hover:text-primary-foreground border-border active:bg-muted active:bg-foreground active:text-background"
         )}
       >
         <CardHeader>
