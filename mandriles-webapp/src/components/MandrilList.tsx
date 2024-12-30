@@ -5,7 +5,6 @@ import axios from "axios"
 import { Mandril } from "../types/mandril"
 import { cn } from "@components/lib/utils"
 import MandrilCard from "./MandrilCard"
-import ThemeProvider from "@components/helpers/ThemeProvider"
 
 const MandrilList: React.FC = () => {
 	const [mandrils, setMandrils] = useState<Mandril[]>([])
@@ -35,12 +34,10 @@ const MandrilList: React.FC = () => {
 		const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
 		const handleChange = (e: MediaQueryListEvent) => {
 			setIsDarkMode(e.matches);
-			console.log('Dark mode:', e.matches);
 		};
 
 		// Set initial state
 		setIsDarkMode(mediaQuery.matches);
-		console.log('Initial dark mode:', mediaQuery.matches);
 		mediaQuery.addEventListener('change', handleChange);
 
 		// Clean up the event listener on component unmount
