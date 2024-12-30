@@ -10,6 +10,7 @@ const MandrilList: React.FC = () => {
 	const [mandrils, setMandrils] = useState<Mandril[]>([])
 	const [loading, setLoading] = useState<boolean>(true)
 	const [error, setError] = useState<string | null>(null)
+	const [isDarkMode, setIsDarkMode] = useState<boolean>(false)
 
 	useEffect(() => {
 		let config = {
@@ -29,6 +30,20 @@ const MandrilList: React.FC = () => {
 			})
 	}, [])
 
+	useEffect(() => {
+		const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+		const handleChange = (e: MediaQueryListEvent) => {
+			setIsDarkMode(e.matches);
+		};
+
+		// Set initial state
+		setIsDarkMode(mediaQuery.matches);
+		mediaQuery.addEventListener('change', handleChange);
+
+		// Clean up the event listener on component unmount
+		return () => mediaQuery.removeEventListener('change', handleChange);
+	}, []);
+
 	if (loading) {
 		return <div>Loading...</div>
 	}
@@ -39,18 +54,18 @@ const MandrilList: React.FC = () => {
 
 	return (
 		<div>
-			<div className={cn("flex flex-col items-center ml-8 mr-8 mt-8 p-4")}>
-				<h1 className="text-4xl font-bold mb-8 mt-8 text-foreground">MANDRILES</h1>
-				<div
-					className={cn(
-						"grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 2xl:grid-cols-4 gap-4 p-4"
-					)}
-				>
-					{mandrils.map((mandril) => (
-						<MandrilCard key={mandril.id} mandril={mandril} />
-					))}
-				</div>
+		<div className={cn("flex flex-col items-center ml-8 mr-8 mt-8 p-4")}>
+			<h1 className="text-4xl font-bold mb-8 mt-8 text-foreground">MANDRILES</h1>
+			<div
+				className={cn(
+					"grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 2xl:grid-cols-4 gap-4 p-4",
+				)}
+			>
+				{mandrils.map((mandril) => (
+					<MandrilCard key={mandril.id} mandril={mandril} />
+				))}
 			</div>
+		</div>
 		</div>
 	)
 }
