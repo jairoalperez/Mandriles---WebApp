@@ -22,7 +22,7 @@ const MandrilCard: React.FC<MandrilCardProps> = ({ mandril }) => {
     <div>
       <Card
         className={cn(
-          "w-[280px] text-center transition-colors duration-200 cursor-pointer bg-card text-card-foreground hover:bg-primary hover:text-primary-foreground border-border"
+          "w-[280px] text-center transition-colors duration-200 cursor-pointer bg-card text-card-foreground hover:bg-primary hover:text-primary-foreground border-border active:bg-muted active:bg-foreground active:text-background"
         )}
       >
         <CardHeader>
