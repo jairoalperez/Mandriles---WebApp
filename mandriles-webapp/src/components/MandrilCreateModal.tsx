@@ -10,6 +10,7 @@ import {
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
 import SuccessModal from "./SuccessModal";
+import ErrorModal from "./ErrorModal";
 
 interface MandrilCreateModalProps {
     isOpen: boolean;
@@ -20,7 +21,8 @@ const MandrilCreateModal: React.FC<MandrilCreateModalProps> = ({
     isOpen,
     onClose,
 }) => {
-    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false);
+    const [isErrorModalOpen, setIsErrorModalOpen] = useState(false);
 
     const [firstName, setFirstName] = useState("");
     const [lastName, setLastName] = useState("");
@@ -38,9 +40,10 @@ const MandrilCreateModal: React.FC<MandrilCreateModalProps> = ({
                 payload
             );
             console.log("Mandril created:", response.data);
-            setIsModalOpen(true)
+            setIsSuccessModalOpen(true)
         } catch (error) {
             console.error("Error creating mandril:", error);
+            setIsErrorModalOpen(true)
         }
     };
 
@@ -88,9 +91,16 @@ const MandrilCreateModal: React.FC<MandrilCreateModalProps> = ({
                             Create
                         </Button>
                         <SuccessModal
-                            isOpen={isModalOpen}
+                            isOpen={isSuccessModalOpen}
                             onClose={() => {
-                                setIsModalOpen(false);
+                                setIsSuccessModalOpen(false);
+                                onClose();
+                            }}
+                        />
+                        <ErrorModal
+                            isOpen={isErrorModalOpen}
+                            onClose={() => {
+                                setIsErrorModalOpen(false);
                                 onClose();
                             }}
                         />

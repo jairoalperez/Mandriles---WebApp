@@ -49,11 +49,11 @@ const MandrilList: React.FC = () => {
   }, []);
 
   if (loading) {
-    return <div>Loading...</div>;
+    return <div className="text-foreground">Loading...</div>;
   }
 
   if (error) {
-    return <div>{error}</div>;
+    return <div className="text-foreground">{error}</div>;
   }
 
   return (
