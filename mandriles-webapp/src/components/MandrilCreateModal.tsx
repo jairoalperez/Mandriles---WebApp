@@ -9,6 +9,7 @@ import {
 } from "./ui/card";
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
+import SuccessModal from "./SuccessModal";
 
 interface MandrilCreateModalProps {
     isOpen: boolean;
@@ -19,6 +20,8 @@ const MandrilCreateModal: React.FC<MandrilCreateModalProps> = ({
     isOpen,
     onClose,
 }) => {
+    const [isModalOpen, setIsModalOpen] = useState(false);
+
     const [firstName, setFirstName] = useState("");
     const [lastName, setLastName] = useState("");
 
@@ -35,7 +38,7 @@ const MandrilCreateModal: React.FC<MandrilCreateModalProps> = ({
                 payload
             );
             console.log("Mandril created:", response.data);
-            onClose(); // Close modal after creating
+            setIsModalOpen(true)
         } catch (error) {
             console.error("Error creating mandril:", error);
         }
@@ -84,6 +87,13 @@ const MandrilCreateModal: React.FC<MandrilCreateModalProps> = ({
                         >
                             Create
                         </Button>
+                        <SuccessModal
+                            isOpen={isModalOpen}
+                            onClose={() => {
+                                setIsModalOpen(false);
+                                onClose();
+                            }}
+                        />
                     </CardFooter>
                 </form>
             </Card>
