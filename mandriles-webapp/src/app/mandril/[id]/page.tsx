@@ -8,6 +8,7 @@ import { Mandril } from '@components/types/mandril';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@components/components/ui/table';
 import { Skill} from '@components/types/skill';
 import { EPower } from '@components/types/power';
+import { Button } from '@components/components/ui/button';
 
 const MandrilDetail: React.FC = () => {
     const params = useParams(); // Get the params object from useParams
@@ -77,6 +78,7 @@ const MandrilDetail: React.FC = () => {
                                 <TableCell className="text-foreground font-bold">{skill.id}</TableCell>
                                 <TableCell className="text-foreground">{skill.name}</TableCell>
                                 <TableCell className="text-foreground">{EPower[skill.power]}</TableCell>
+                                <TableCell className="text-foreground"><Button className='text-foreground bg-red-500 bg-opacity-50 font-bold hover:bg-red-500 hover:bg-opacity-100'>X</Button></TableCell>
                             </TableRow>
                         ))}
                     </TableBody>
