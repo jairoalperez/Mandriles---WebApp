@@ -19,6 +19,7 @@ import {
     SelectValue,
 } from "./ui/select";
 import { EPower } from "@components/types/power";
+import { useParams } from "next/navigation";
 
 interface SkillCreateModalProps {
     isOpen: boolean;
@@ -29,6 +30,9 @@ const SkillCreateModal: React.FC<SkillCreateModalProps> = ({
     isOpen,
     onClose,
 }) => {
+    const params = useParams(); // Get the params object from useParams
+    const id = params?.id; // Access the id parameter from the params object
+
     const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false);
     const [isErrorModalOpen, setIsErrorModalOpen] = useState(false);
 
@@ -41,11 +45,11 @@ const SkillCreateModal: React.FC<SkillCreateModalProps> = ({
             Name: name,
             Power: power,
         };
-        console.log(payload);
+        //console.log(payload);
 
         try {
             const response = await axios.post(
-                "https://localhost:7095/mandril",
+                `https://localhost:7095/mandril/${id}/skill`,
                 payload
             );
             console.log("Mandril created:", response.data);
@@ -84,7 +88,10 @@ const SkillCreateModal: React.FC<SkillCreateModalProps> = ({
                                 {Object.entries(EPower).map(([key, value]) => {
                                     if (isNaN(Number(key))) {
                                         return (
-                                            <SelectItem key={key} value={String(value)}>
+                                            <SelectItem
+                                                key={key}
+                                                value={String(value)}
+                                            >
                                                 {key}
                                             </SelectItem>
                                         );
