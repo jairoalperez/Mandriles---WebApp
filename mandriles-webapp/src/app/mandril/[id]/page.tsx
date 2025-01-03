@@ -18,6 +18,7 @@ import { EPower } from "@components/types/power";
 import { Button } from "@components/components/ui/button";
 import SkillCreateModal from "@components/components/SkillCreateModal";
 import { DeleteIcon } from "@components/components/ui/delete";
+import { SquarePenIcon } from "@components/components/ui/square-pen";
 
 const MandrilDetail: React.FC = () => {
     const params = useParams(); // Get the params object from useParams
@@ -110,6 +111,9 @@ const MandrilDetail: React.FC = () => {
                                     <TableHead className="font-bold w-48">
                                         Power
                                     </TableHead>
+                                    <TableHead>
+
+                                    </TableHead>
                                 </TableRow>
                             </TableHeader>
                             <TableBody>
@@ -125,11 +129,16 @@ const MandrilDetail: React.FC = () => {
                                             {EPower[skill.power]}
                                         </TableCell>
                                         <TableCell className="text-foreground">
+                                            <div className="flex justify-between items-center">
+                                            <button className="mr-2">
+                                                <SquarePenIcon />
+                                            </button>
                                             <button 
                                             //className="text-foreground bg-red-500 bg-opacity-50 font-bold hover:bg-red-500 hover:bg-opacity-100"
                                             onClick={() => handleDelete(skill.id)}>
                                                 <DeleteIcon />
                                             </button>
+                                            </div>
                                         </TableCell>
                                     </TableRow>
                                 ))}
