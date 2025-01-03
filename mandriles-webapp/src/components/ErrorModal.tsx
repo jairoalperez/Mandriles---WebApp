@@ -32,7 +32,7 @@ const SuccessModal: React.FC<SuccessModalProps> = ({
             <Card className="bg-background p-6 rounded-lg shadow-lg border-border border shadow">
                 <CardHeader>
                     <CardTitle className="text-xl mb-4 text-foreground text-center">
-                        Error Creating Mandril :(
+                        Error Creating :(
                     </CardTitle>
                 </CardHeader>
                 <CardContent className="text-center justify-center">

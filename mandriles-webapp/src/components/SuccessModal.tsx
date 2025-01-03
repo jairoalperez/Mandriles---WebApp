@@ -22,7 +22,6 @@ const SuccessModal: React.FC<SuccessModalProps> = ({
 }) => {
     const handleSubmit = async () => {
         console.log("Mandril Created Successfully!");
-        window.location.reload(); // Refresh the page to update the dashboard
         onClose(); // Close modal after creating
     };
 
@@ -33,7 +32,7 @@ const SuccessModal: React.FC<SuccessModalProps> = ({
             <Card className="bg-background p-6 rounded-lg shadow-lg border-border border shadow">
                 <CardHeader>
                     <CardTitle className="text-xl mb-4 text-foreground text-center">
-                        Mandril Created Successfully!
+                        Created Successfully!
                     </CardTitle>
                 </CardHeader>
                 <CardContent className="text-center justify-center">
