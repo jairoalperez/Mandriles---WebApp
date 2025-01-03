@@ -60,6 +60,24 @@ const MandrilDetail: React.FC = () => {
         return () => mediaQuery.removeEventListener("change", handleChange);
     }, []);
 
+    const handleDelete = async (skillId: number) => {
+        try {
+            await axios.delete(`https://localhost:7095/mandril/${id}/skill/${skillId}`)
+            .then((response) => {
+                console.log("Mandril deleted: ", response.data);
+                if (mandril) {
+                    setMandril({
+                        ...mandril,
+                        skills: mandril.skills.filter((skill) => skill.id !== skillId)
+                    });
+                }
+            })
+        }
+        catch (error) {
+            console.error("Error deleting mandril: ", error);
+        }
+    }
+
     if (loading) {
         return <div>Loading...</div>;
     }
@@ -106,7 +124,9 @@ const MandrilDetail: React.FC = () => {
                                             {EPower[skill.power]}
                                         </TableCell>
                                         <TableCell className="text-foreground">
-                                            <Button className="text-foreground bg-red-500 bg-opacity-50 font-bold hover:bg-red-500 hover:bg-opacity-100">
+                                            <Button 
+                                            className="text-foreground bg-red-500 bg-opacity-50 font-bold hover:bg-red-500 hover:bg-opacity-100"
+                                            onClick={() => handleDelete(skill.id)}>
                                                 X
                                             </Button>
                                         </TableCell>
