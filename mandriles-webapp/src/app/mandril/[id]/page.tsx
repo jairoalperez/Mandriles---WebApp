@@ -46,7 +46,7 @@ const MandrilDetail: React.FC = () => {
                     setLoading(false);
                 });
         }
-    }, [id]);
+    }, [id, isModalOpen]);
 
     React.useEffect(() => {
         const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
