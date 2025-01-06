@@ -191,19 +191,19 @@ const MandrilDetail: React.FC = () => {
                         </Table>
                         <div className="flex justify-between items-center mt-8 w-full mx-auto">
                             <Button
-                                className="w-32 text-foreground bg-yellow-500 bg-opacity-50 font-bold hover:bg-yellow-500 hover:bg-opacity-100"
+                                className="w-32 text-foreground bg-yellow-500 bg-opacity-50 font-bold hover:bg-yellow-500 hover:bg-opacity-100 hover:text-background"
                                 onClick={() => setIsModalOpen(true)}
                             >
                                 Add Skill
                             </Button>
                             <Button
-                                className="w-32 text-foreground bg-gray-500 bg-opacity-50 font-bold hover:bg-yellow-gray hover:bg-opacity-100"
+                                className="w-32 text-foreground bg-gray-500 bg-opacity-50 font-bold hover:bg-yellow-gray hover:bg-opacity-100 hover:text-background"
                                 onClick={() => setIsEditMandrilModalOpen(true)}
                             >
                                 Edit Mandril
                             </Button>
                             <Button
-                                className="w-32 text-foreground bg-red-500 bg-opacity-50 font-bold hover:bg-red-500 hover:bg-opacity-100"
+                                className="w-32 text-foreground bg-red-500 bg-opacity-50 font-bold hover:bg-red-500 hover:bg-opacity-100 hover:text-background"
                                 onClick={() => {
                                     setIsConfirmDeletionModalOpen(true)
                                 }}
