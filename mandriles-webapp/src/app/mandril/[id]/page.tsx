@@ -20,6 +20,7 @@ import SkillCreateModal from "@components/components/SkillCreateModal";
 import { DeleteIcon } from "@components/components/ui/delete";
 import { SquarePenIcon } from "@components/components/ui/square-pen";
 import EditSkillModal from "@components/components/EditSkillModal";
+import ConfirmationModal from "@components/components/ConfirmationModal";
 
 const MandrilDetail: React.FC = () => {
     const params = useParams(); // Get the params object from useParams
@@ -32,6 +33,10 @@ const MandrilDetail: React.FC = () => {
     const [isModalOpen, setIsModalOpen] = React.useState(false);
     const [isEditModalOpen, setIsEditModalOpen] = React.useState(false);
     const [selectedSkill, setSelectedSkill] = React.useState<Skill | null>(
+        null
+    );
+    const [isConfirmModalOpen, setIsConfirmModalOpen] = React.useState(false);
+    const [skillToDelete, setSkillToDelete] = React.useState<number | null>(
         null
     );
 
@@ -67,23 +72,27 @@ const MandrilDetail: React.FC = () => {
         return () => mediaQuery.removeEventListener("change", handleChange);
     }, []);
 
-    const handleDelete = async (skillId: number) => {
-        try {
-            await axios
-                .delete(`https://localhost:7095/mandril/${id}/skill/${skillId}`)
-                .then((response) => {
-                    console.log("Mandril deleted: ", response.data);
-                    if (mandril) {
-                        setMandril({
-                            ...mandril,
-                            skills: mandril.skills.filter(
-                                (skill) => skill.id !== skillId
-                            ),
-                        });
-                    }
-                });
-        } catch (error) {
-            console.error("Error deleting mandril: ", error);
+    const handleDelete = async () => {
+        if (skillToDelete !== null && id) {
+            try {
+                await axios
+                    .delete(
+                        `https://localhost:7095/mandril/${id}/skill/${skillToDelete}`
+                    )
+                    .then((response) => {
+                        console.log("Mandril deleted: ", response.data);
+                        if (mandril) {
+                            setMandril({
+                                ...mandril,
+                                skills: mandril.skills.filter(
+                                    (skill) => skill.id !== skillToDelete
+                                ),
+                            });
+                        }
+                    });
+            } catch (error) {
+                console.error("Error deleting mandril: ", error);
+            }
         }
     };
 
@@ -142,19 +151,15 @@ const MandrilDetail: React.FC = () => {
                                                         setIsEditModalOpen(
                                                             true
                                                         );
-                                                        console.log(
-                                                            skill.id,
-                                                            skill.name,
-                                                            skill.power
-                                                        );
                                                     }}
                                                 >
                                                     <SquarePenIcon />
                                                 </button>
                                                 <button
-                                                    onClick={() =>
-                                                        handleDelete(skill.id)
-                                                    }
+                                                    onClick={() => {
+                                                        setIsConfirmModalOpen(true)
+                                                        setSkillToDelete(skill.id)
+                                                    }}
                                                 >
                                                     <DeleteIcon />
                                                 </button>
@@ -171,7 +176,12 @@ const MandrilDetail: React.FC = () => {
                             >
                                 Add Skill
                             </Button>
-                            <Button className="w-32 text-foreground bg-red-500 bg-opacity-50 font-bold hover:bg-red-500 hover:bg-opacity-100">
+                            <Button
+                                className="w-32 text-foreground bg-red-500 bg-opacity-50 font-bold hover:bg-red-500 hover:bg-opacity-100"
+                                onClick={() => {
+                                    setIsConfirmModalOpen(true)
+                                }}
+                            >
                                 Delete Mandril
                             </Button>
                         </div>
@@ -188,6 +198,13 @@ const MandrilDetail: React.FC = () => {
                         namePlaceholder={selectedSkill?.name ?? ""}
                         powerPlaceholder={selectedSkill?.power ?? 0}
                         skillId={selectedSkill?.id ?? 0}
+                    />
+                ) : null}
+                {isConfirmModalOpen ? (
+                    <ConfirmationModal
+                        isOpen={isConfirmModalOpen}
+                        onClose={() => setIsConfirmModalOpen(false)}
+                        onConfirm={handleDelete}
                     />
                 ) : null}
             </div>
