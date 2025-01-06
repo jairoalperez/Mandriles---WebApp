@@ -21,6 +21,7 @@ import { DeleteIcon } from "@components/components/ui/delete";
 import { SquarePenIcon } from "@components/components/ui/square-pen";
 import EditSkillModal from "@components/components/EditSkillModal";
 import ConfirmationModal from "@components/components/ConfirmationModal";
+import ConfirmDeletionModal from "@components/components/ConfirmDeletionModal";
 
 const MandrilDetail: React.FC = () => {
     const params = useParams(); // Get the params object from useParams
@@ -39,6 +40,7 @@ const MandrilDetail: React.FC = () => {
     const [skillToDelete, setSkillToDelete] = React.useState<number | null>(
         null
     );
+    const [isConfirmDeletionModalOpen, setIsConfirmDeletionModalOpen] = React.useState(false);
 
     React.useEffect(() => {
         if (id) {
@@ -80,7 +82,7 @@ const MandrilDetail: React.FC = () => {
                         `https://localhost:7095/mandril/${id}/skill/${skillToDelete}`
                     )
                     .then((response) => {
-                        console.log("Mandril deleted: ", response.data);
+                        console.log("skill deleted: ", response.data);
                         if (mandril) {
                             setMandril({
                                 ...mandril,
@@ -91,10 +93,26 @@ const MandrilDetail: React.FC = () => {
                         }
                     });
             } catch (error) {
-                console.error("Error deleting mandril: ", error);
+                console.error("Error deleting skill: ", error);
             }
         }
     };
+
+    const deleteMandril = async () => {
+        console.log("aqui")
+        if (id) {
+            try {
+                await axios
+                    .delete(`https://localhost:7095/mandril/${id}`)
+                    .then((response) => {
+                        console.log("mandril deleted: ", response.data);
+                        window.location.href = "/";
+                    })
+            } catch (error) {
+                console.error("Error deleting mandril: ", error);
+            }
+        }
+    }
 
     if (loading) {
         return <div>Loading...</div>;
@@ -179,7 +197,7 @@ const MandrilDetail: React.FC = () => {
                             <Button
                                 className="w-32 text-foreground bg-red-500 bg-opacity-50 font-bold hover:bg-red-500 hover:bg-opacity-100"
                                 onClick={() => {
-                                    setIsConfirmModalOpen(true)
+                                    setIsConfirmDeletionModalOpen(true)
                                 }}
                             >
                                 Delete Mandril
@@ -205,6 +223,13 @@ const MandrilDetail: React.FC = () => {
                         isOpen={isConfirmModalOpen}
                         onClose={() => setIsConfirmModalOpen(false)}
                         onConfirm={handleDelete}
+                    />
+                ) : null}
+                {isConfirmDeletionModalOpen ? (
+                    <ConfirmDeletionModal
+                        isOpen={isConfirmDeletionModalOpen}
+                        onClose={() => setIsConfirmDeletionModalOpen(false)}
+                        onConfirm={deleteMandril}
                     />
                 ) : null}
             </div>
