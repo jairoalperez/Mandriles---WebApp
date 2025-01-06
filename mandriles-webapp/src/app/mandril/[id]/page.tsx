@@ -19,6 +19,7 @@ import { Button } from "@components/components/ui/button";
 import SkillCreateModal from "@components/components/SkillCreateModal";
 import { DeleteIcon } from "@components/components/ui/delete";
 import { SquarePenIcon } from "@components/components/ui/square-pen";
+import EditSkillModal from "@components/components/EditSkillModal";
 
 const MandrilDetail: React.FC = () => {
     const params = useParams(); // Get the params object from useParams
@@ -29,6 +30,10 @@ const MandrilDetail: React.FC = () => {
     const [error, setError] = React.useState<string | null>(null);
     const [isDarkMode, setIsDarkMode] = React.useState<boolean>(false);
     const [isModalOpen, setIsModalOpen] = React.useState(false);
+    const [isEditModalOpen, setIsEditModalOpen] = React.useState(false);
+    const [selectedSkill, setSelectedSkill] = React.useState<Skill | null>(
+        null
+    );
 
     React.useEffect(() => {
         if (id) {
@@ -48,7 +53,7 @@ const MandrilDetail: React.FC = () => {
                     setLoading(false);
                 });
         }
-    }, [id, isModalOpen]);
+    }, [id, isModalOpen, isEditModalOpen]);
 
     React.useEffect(() => {
         const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
@@ -64,21 +69,23 @@ const MandrilDetail: React.FC = () => {
 
     const handleDelete = async (skillId: number) => {
         try {
-            await axios.delete(`https://localhost:7095/mandril/${id}/skill/${skillId}`)
-            .then((response) => {
-                console.log("Mandril deleted: ", response.data);
-                if (mandril) {
-                    setMandril({
-                        ...mandril,
-                        skills: mandril.skills.filter((skill) => skill.id !== skillId)
-                    });
-                }
-            })
-        }
-        catch (error) {
+            await axios
+                .delete(`https://localhost:7095/mandril/${id}/skill/${skillId}`)
+                .then((response) => {
+                    console.log("Mandril deleted: ", response.data);
+                    if (mandril) {
+                        setMandril({
+                            ...mandril,
+                            skills: mandril.skills.filter(
+                                (skill) => skill.id !== skillId
+                            ),
+                        });
+                    }
+                });
+        } catch (error) {
             console.error("Error deleting mandril: ", error);
         }
-    }
+    };
 
     if (loading) {
         return <div>Loading...</div>;
@@ -111,9 +118,7 @@ const MandrilDetail: React.FC = () => {
                                     <TableHead className="font-bold w-48">
                                         Power
                                     </TableHead>
-                                    <TableHead>
-
-                                    </TableHead>
+                                    <TableHead></TableHead>
                                 </TableRow>
                             </TableHeader>
                             <TableBody>
@@ -130,14 +135,29 @@ const MandrilDetail: React.FC = () => {
                                         </TableCell>
                                         <TableCell className="text-foreground">
                                             <div className="flex justify-between items-center">
-                                            <button className="mr-2">
-                                                <SquarePenIcon />
-                                            </button>
-                                            <button 
-                                            //className="text-foreground bg-red-500 bg-opacity-50 font-bold hover:bg-red-500 hover:bg-opacity-100"
-                                            onClick={() => handleDelete(skill.id)}>
-                                                <DeleteIcon />
-                                            </button>
+                                                <button
+                                                    className="mr-2"
+                                                    onClick={() => {
+                                                        setSelectedSkill(skill);
+                                                        setIsEditModalOpen(
+                                                            true
+                                                        );
+                                                        console.log(
+                                                            skill.id,
+                                                            skill.name,
+                                                            skill.power
+                                                        );
+                                                    }}
+                                                >
+                                                    <SquarePenIcon />
+                                                </button>
+                                                <button
+                                                    onClick={() =>
+                                                        handleDelete(skill.id)
+                                                    }
+                                                >
+                                                    <DeleteIcon />
+                                                </button>
                                             </div>
                                         </TableCell>
                                     </TableRow>
@@ -161,6 +181,15 @@ const MandrilDetail: React.FC = () => {
                     isOpen={isModalOpen}
                     onClose={() => setIsModalOpen(false)}
                 />
+                {isEditModalOpen ? (
+                    <EditSkillModal
+                        isOpen={isEditModalOpen}
+                        onClose={() => setIsEditModalOpen(false)}
+                        namePlaceholder={selectedSkill?.name ?? ""}
+                        powerPlaceholder={selectedSkill?.power ?? 0}
+                        skillId={selectedSkill?.id ?? 0}
+                    />
+                ) : null}
             </div>
         </div>
     );

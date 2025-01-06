@@ -25,7 +25,7 @@ interface SkillCreateModalProps {
     isOpen: boolean;
     onClose: () => void;
     namePlaceholder: string;
-    powerPlaceholder: string;
+    powerPlaceholder: number;
     skillId: number;
 }
 
@@ -42,8 +42,8 @@ const SkillCreateModal: React.FC<SkillCreateModalProps> = ({
     const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false);
     const [isErrorModalOpen, setIsErrorModalOpen] = useState(false);
 
-    const [name, setName] = useState("");
-    const [power, setPower] = useState("");
+    const [name, setName] = useState<string>(namePlaceholder);
+    const [power, setPower] = useState<number>(powerPlaceholder);
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -51,7 +51,6 @@ const SkillCreateModal: React.FC<SkillCreateModalProps> = ({
             Name: name,
             Power: power,
         };
-        //console.log(payload);
 
         try {
             const response = await axios.put(
@@ -66,9 +65,10 @@ const SkillCreateModal: React.FC<SkillCreateModalProps> = ({
         }
     };
 
-    if (!isOpen) return null;
+    if (!isOpen || !namePlaceholder) return null;
 
     return (
+        <div>
         <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
             <Card className="bg-background p-6 rounded-lg shadow-lg border-border border shadow">
                 <CardHeader>
@@ -80,16 +80,21 @@ const SkillCreateModal: React.FC<SkillCreateModalProps> = ({
                     <CardContent>
                         <Input
                             type="text"
-                            placeholder={namePlaceholder}
-                            defaultValue={namePlaceholder}
+                            placeholder={name}
                             value={name}
                             onChange={(e) => setName(e.target.value)}
                             required
                             className="p-2 mb-4 w-full"
                         />
-                        <Select value={power} onValueChange={setPower}>
+                        <Select 
+                            value={power?.toString()} 
+                            onValueChange={(val) => {
+                                console.log("Nuevo valor seleccionado:", val);
+                                setPower(Number(val));
+                            }}
+                        >
                             <SelectTrigger>
-                                <SelectValue placeholder={powerPlaceholder} />
+                                <SelectValue placeholder={EPower[powerPlaceholder]} />
                             </SelectTrigger>
                             <SelectContent>
                                 {Object.entries(EPower).map(([key, value]) => {
@@ -138,6 +143,7 @@ const SkillCreateModal: React.FC<SkillCreateModalProps> = ({
                     </CardFooter>
                 </form>
             </Card>
+        </div>
         </div>
     );
 };
