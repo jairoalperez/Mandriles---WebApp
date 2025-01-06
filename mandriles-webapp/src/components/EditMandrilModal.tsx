@@ -103,7 +103,7 @@ const EditMandrilModal: React.FC<EditMandrilModalProps> = ({
                             type="submit"
                             className="bg-yellow-500 bg-opacity-50 font-bold text-foreground hover:text-background"
                         >
-                            Create
+                            Confirm
                         </Button>
                         <SuccessModal
                             isOpen={isSuccessModalOpen}
