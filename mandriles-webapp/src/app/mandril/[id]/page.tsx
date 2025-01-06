@@ -80,7 +80,7 @@ const MandrilDetail: React.FC = () => {
                         `https://localhost:7095/mandril/${id}/skill/${skillToDelete}`
                     )
                     .then((response) => {
-                        console.log("Mandril deleted: ", response.data);
+                        console.log("skill deleted: ", response.data);
                         if (mandril) {
                             setMandril({
                                 ...mandril,
@@ -91,10 +91,25 @@ const MandrilDetail: React.FC = () => {
                         }
                     });
             } catch (error) {
-                console.error("Error deleting mandril: ", error);
+                console.error("Error deleting skill: ", error);
             }
         }
     };
+
+    const deleteMandril = async () => {
+        if (id) {
+            try {
+                await axios
+                    .delete(`https://localhost:7095/mandril/${id}`)
+                    .then((response) => {
+                        console.log("mandril deleted: ", response.data);
+                        window.location.href = "/";
+                    })
+            } catch (error) {
+                console.error("Error deleting mandril: ", error);
+            }
+        }
+    }
 
     if (loading) {
         return <div>Loading...</div>;
