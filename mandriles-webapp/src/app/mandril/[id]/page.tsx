@@ -22,6 +22,7 @@ import { SquarePenIcon } from "@components/components/ui/square-pen";
 import EditSkillModal from "@components/components/EditSkillModal";
 import ConfirmationModal from "@components/components/ConfirmationModal";
 import ConfirmDeletionModal from "@components/components/ConfirmDeletionModal";
+import EditMandrilModal from "@components/components/EditMandrilModal";
 
 const MandrilDetail: React.FC = () => {
     const params = useParams(); // Get the params object from useParams
@@ -41,6 +42,7 @@ const MandrilDetail: React.FC = () => {
         null
     );
     const [isConfirmDeletionModalOpen, setIsConfirmDeletionModalOpen] = React.useState(false);
+    const [isEditMandrilModalOpen, setIsEditMandrilModalOpen] = React.useState(false);
 
     React.useEffect(() => {
         if (id) {
@@ -60,7 +62,7 @@ const MandrilDetail: React.FC = () => {
                     setLoading(false);
                 });
         }
-    }, [id, isModalOpen, isEditModalOpen]);
+    }, [id, isModalOpen, isEditModalOpen, isEditMandrilModalOpen]);
 
     React.useEffect(() => {
         const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
@@ -189,13 +191,19 @@ const MandrilDetail: React.FC = () => {
                         </Table>
                         <div className="flex justify-between items-center mt-8 w-full mx-auto">
                             <Button
-                                className="w-32 text-foreground bg-yellow-500 bg-opacity-50 font-bold hover:bg-yellow-500 hover:bg-opacity-100"
+                                className="w-32 text-foreground bg-yellow-500 bg-opacity-50 font-bold hover:bg-yellow-500 hover:bg-opacity-100 hover:text-background"
                                 onClick={() => setIsModalOpen(true)}
                             >
                                 Add Skill
                             </Button>
                             <Button
-                                className="w-32 text-foreground bg-red-500 bg-opacity-50 font-bold hover:bg-red-500 hover:bg-opacity-100"
+                                className="w-32 text-foreground bg-gray-500 bg-opacity-50 font-bold hover:bg-yellow-gray hover:bg-opacity-100 hover:text-background"
+                                onClick={() => setIsEditMandrilModalOpen(true)}
+                            >
+                                Edit Mandril
+                            </Button>
+                            <Button
+                                className="w-32 text-foreground bg-red-500 bg-opacity-50 font-bold hover:bg-red-500 hover:bg-opacity-100 hover:text-background"
                                 onClick={() => {
                                     setIsConfirmDeletionModalOpen(true)
                                 }}
@@ -230,6 +238,14 @@ const MandrilDetail: React.FC = () => {
                         isOpen={isConfirmDeletionModalOpen}
                         onClose={() => setIsConfirmDeletionModalOpen(false)}
                         onConfirm={deleteMandril}
+                    />
+                ) : null}
+                {isEditMandrilModalOpen ? (
+                    <EditMandrilModal
+                        isOpen={isEditMandrilModalOpen}
+                        onClose={() => setIsEditMandrilModalOpen(false)}
+                        firstNamePlaceholder={mandril?.firstName ?? ""}
+                        lastNamePlaceholder={mandril?.lastName ?? ""}
                     />
                 ) : null}
             </div>
