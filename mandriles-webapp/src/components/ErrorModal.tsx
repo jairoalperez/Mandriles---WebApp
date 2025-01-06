@@ -16,12 +16,9 @@ interface SuccessModalProps {
     onClose: () => void;
 }
 
-const SuccessModal: React.FC<SuccessModalProps> = ({
-    isOpen,
-    onClose,
-}) => {
+const SuccessModal: React.FC<SuccessModalProps> = ({ isOpen, onClose }) => {
     const handleSubmit = async () => {
-        console.log("Error Creating Mandril :(");
+        console.log("An Error Has Occurred :(");
         onClose(); // Close modal after creating
     };
 
@@ -32,11 +29,16 @@ const SuccessModal: React.FC<SuccessModalProps> = ({
             <Card className="bg-background p-6 rounded-lg shadow-lg border-border border shadow">
                 <CardHeader>
                     <CardTitle className="text-xl mb-4 text-foreground text-center">
-                        Error Creating :(
+                        An Error Has Occurred :(
                     </CardTitle>
                 </CardHeader>
                 <CardContent className="text-center justify-center">
-                <Button onClick={handleSubmit} className="bg-red-500 bg-opacity-50 font-bold text-foreground hover:text-background">Close</Button>
+                    <Button
+                        onClick={handleSubmit}
+                        className="bg-red-500 bg-opacity-50 font-bold text-foreground hover:text-background"
+                    >
+                        Close
+                    </Button>
                 </CardContent>
             </Card>
         </div>

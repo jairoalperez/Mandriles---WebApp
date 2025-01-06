@@ -24,11 +24,17 @@ import { useParams } from "next/navigation";
 interface SkillCreateModalProps {
     isOpen: boolean;
     onClose: () => void;
+    namePlaceholder: string;
+    powerPlaceholder: number;
+    skillId: number;
 }
 
 const SkillCreateModal: React.FC<SkillCreateModalProps> = ({
     isOpen,
     onClose,
+    namePlaceholder,
+    powerPlaceholder,
+    skillId
 }) => {
     const params = useParams(); // Get the params object from useParams
     const id = params?.id; // Access the id parameter from the params object
@@ -36,8 +42,8 @@ const SkillCreateModal: React.FC<SkillCreateModalProps> = ({
     const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false);
     const [isErrorModalOpen, setIsErrorModalOpen] = useState(false);
 
-    const [name, setName] = useState("");
-    const [power, setPower] = useState("");
+    const [name, setName] = useState<string>(namePlaceholder);
+    const [power, setPower] = useState<number>(powerPlaceholder);
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -45,44 +51,49 @@ const SkillCreateModal: React.FC<SkillCreateModalProps> = ({
             Name: name,
             Power: power,
         };
-        //console.log(payload);
 
         try {
-            const response = await axios.post(
-                `https://localhost:7095/mandril/${id}/skill`,
+            const response = await axios.put(
+                `https://localhost:7095/mandril/${id}/skill/${skillId}`,
                 payload
             );
-            console.log("Skill created:", response.data);
+            console.log("Skill edited:", response.data);
             setIsSuccessModalOpen(true);
         } catch (error) {
-            console.error("Error creating skill:", error);
+            console.error("Error editing skill:", error);
             setIsErrorModalOpen(true);
         }
     };
 
-    if (!isOpen) return null;
+    if (!isOpen || !namePlaceholder) return null;
 
     return (
+        <div>
         <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
             <Card className="bg-background p-6 rounded-lg shadow-lg border-border border shadow">
                 <CardHeader>
                     <CardTitle className="text-xl mb-4 text-foreground text-center">
-                        Create New Skill
+                        Edit Skill
                     </CardTitle>
                 </CardHeader>
                 <form onSubmit={handleSubmit}>
                     <CardContent>
                         <Input
                             type="text"
-                            placeholder="Name"
+                            placeholder={name}
                             value={name}
                             onChange={(e) => setName(e.target.value)}
                             required
                             className="p-2 mb-4 w-full"
                         />
-                        <Select value={power} onValueChange={setPower}>
+                        <Select 
+                            value={power?.toString()} 
+                            onValueChange={(val) => {
+                                setPower(Number(val));
+                            }}
+                        >
                             <SelectTrigger>
-                                <SelectValue placeholder="Select Power" />
+                                <SelectValue placeholder={EPower[powerPlaceholder]} />
                             </SelectTrigger>
                             <SelectContent>
                                 {Object.entries(EPower).map(([key, value]) => {
@@ -112,7 +123,7 @@ const SkillCreateModal: React.FC<SkillCreateModalProps> = ({
                             type="submit"
                             className="bg-yellow-500 bg-opacity-50 font-bold text-foreground hover:text-background"
                         >
-                            Create
+                            Confirm
                         </Button>
                         <SuccessModal
                             isOpen={isSuccessModalOpen}
@@ -131,6 +142,7 @@ const SkillCreateModal: React.FC<SkillCreateModalProps> = ({
                     </CardFooter>
                 </form>
             </Card>
+        </div>
         </div>
     );
 };
