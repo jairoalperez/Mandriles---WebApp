@@ -52,10 +52,10 @@ const SkillCreateModal: React.FC<SkillCreateModalProps> = ({
                 `https://localhost:7095/mandril/${id}/skill`,
                 payload
             );
-            console.log("Mandril created:", response.data);
+            console.log("Skill created:", response.data);
             setIsSuccessModalOpen(true);
         } catch (error) {
-            console.error("Error creating mandril:", error);
+            console.error("Error creating skill:", error);
             setIsErrorModalOpen(true);
         }
     };
