@@ -89,7 +89,6 @@ const SkillCreateModal: React.FC<SkillCreateModalProps> = ({
                         <Select 
                             value={power?.toString()} 
                             onValueChange={(val) => {
-                                console.log("Nuevo valor seleccionado:", val);
                                 setPower(Number(val));
                             }}
                         >
